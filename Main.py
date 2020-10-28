@@ -1,10 +1,10 @@
-
+import Automatas
 #DECLARACION DE VARIABLES#
-document = ''
+document = []
 cicle = True
 option = ''
 path = ''
-documentBlocks = []
+tokens = []
 
 while cicle:
 
@@ -25,13 +25,13 @@ while cicle:
         path = input('RUTA: ')
         try:
             with open(path, "r") as f:
-                document = ''
+                document = []
                 for line in f:
-                    document = document + line
+                    document.append(line)
         except:
             print('--- OCURRIO UN ERROR AL LEER: '+path+' ---')
     elif option == '2':
-        print('manejo afd')
+        Automatas.readScript(document, tokens)
     elif option == '3':
         print('pila interactiva')
     elif option == '4':
