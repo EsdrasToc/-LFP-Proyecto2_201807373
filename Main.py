@@ -31,9 +31,14 @@ while cicle:
         except:
             print('--- OCURRIO UN ERROR AL LEER: '+path+' ---')
     elif option == '2':
+        tokens = []
         Automatas.readScript(document, tokens)
     elif option == '3':
-        print('pila interactiva')
+        aux = []
+        for token in tokens:
+            if token.token != 'error' and token.token != 'tk_comment':
+                aux.append(token)
+        Automatas.syntacticAnalysis(aux)
     elif option == '4':
         print('diagrama de bloques de codigo')
     elif option == '5':
