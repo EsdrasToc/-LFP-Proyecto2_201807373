@@ -1,6 +1,6 @@
 import Clases
 
-Reservadas = ['let', 'var','const','if','while','foreach','in','switch','case','break','default', 'print']
+Reservadas = ['let', 'var','const','if','while','foreach','in','switch','case','break','default']
 
 #=========================#
 #AUTOMATA LECTOR DE SCRIPT#
@@ -251,13 +251,13 @@ def isBool(word):
 #=========================================================================#
 
 #DEFINIMOS SIMBOLOS TERMINALES Y SIMBOLOS NO TERMINALES#
-Terminals = ['tk_comment','tk_id','tk_arrow','tk_semicolon','tk_openPar',
+Terminals = ['tk_id','tk_arrow','tk_semicolon','tk_openPar',
 'tk_closePar','tk_openBrack','tk_closeBrack','tk_number','tk_boolean',
 'tk_string','tk_equal','tk_comma','tk_points','tk_let','tk_var','tk_const',
 'tk_if','tk_while','tk_foreach','tk_in','tk_switch','tk_case','tk_break','tk_default']
 NoTerminals = ['INSTRUCTION','VALUE','CASES','DECLARER','ID_PARAMETERS','PARAMETERS','DATA','BREAK']
 
-def syntacticAnalysis(Tokens):
+def syntacticAnalysis(Tokens, stop):
     stack = ['λ']
     counter = 0
     state = 'i'
@@ -288,10 +288,11 @@ def syntacticAnalysis(Tokens):
         transicion = ''
         aux = []
         if error:
-            print('SE HA DETECTADO UN ERROR')
+            print('----- SE HA ENCONTRADO UN ERROR SINTACTICO -----')
             break
 
-        input()
+        if stop:
+            input()
 
         #pasando pila a string#
         pila = ''
@@ -494,6 +495,10 @@ def syntacticAnalysis(Tokens):
                         out = stack.pop()
                         stack.append('tk_boolean')
                         intro = 'tk_boolean'
+                    elif Tokens[i].token == 'tk_id':
+                        out = stack.pop()
+                        stack.append('tk_id')
+                        intro = 'tk_id'
                     else:
                         out = stack.pop()
                         j-=1
@@ -580,6 +585,8 @@ def isData(token):
     elif token == 'tk_boolean':
         return True
     elif token == 'tk_string':
+        return True
+    elif token == 'tk_id':
         return True
     else:
         return False
