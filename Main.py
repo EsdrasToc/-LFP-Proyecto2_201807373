@@ -1,11 +1,14 @@
 import Automatas
+import outputFunctions
+from graphviz import Digraph
 #DECLARACION DE VARIABLES#
 document = []
 cicle = True
 option = ''
 path = ''
 tokens = []
-
+dot = None
+edges = []
 while cicle:
 
     #IMPRESION DE MENU#
@@ -17,8 +20,7 @@ while cicle:
     print('[5] - Salir')
 
     print('Ingrese el numeral de la instruccion que desea ejecutar:')
-    option = input('$')
-
+    option = input()
     #LECTURA DE INSTRUCCION#
     if option == '1':
         print('--- INGRESE LA RUTA DEL SCRIPT QUE DESEA CARGAR ---')
@@ -35,12 +37,26 @@ while cicle:
         Automatas.readScript(document, tokens)
     elif option == '3':
         aux = []
-        for token in tokens:
+        tokens = []
+        for token in Automatas.readScript(document, tokens):
             if token.token != 'error' and token.token != 'tk_comment':
                 aux.append(token)
-        Automatas.syntacticAnalysis(aux)
+        Automatas.syntacticAnalysis(aux, True)
     elif option == '4':
-        print('diagrama de bloques de codigo')
+        aux = []
+        asf =  0
+        tokens = []
+        edges = []
+        dot = Digraph(comment='flujo de script')
+        for token in Automatas.readScript(document, tokens):
+            if token.token != 'error' and token.token != 'tk_comment':
+                aux.append(token)
+                asf +=1
+        print('---'+str(asf))
+        outputFunctions.createDiagram(aux,dot,65,edges,True,65, False)
+        dot.edges(edges)
+        print(dot.source)
+        dot.render('test-output/instrucciones.gv', view=True)
     elif option == '5':
         print('HASTA PRONTO')
         cicle = False
