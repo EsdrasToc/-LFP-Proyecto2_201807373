@@ -1,6 +1,7 @@
 import Automatas
 import outputFunctions
 from graphviz import Digraph
+
 #DECLARACION DE VARIABLES#
 document = []
 cicle = True
@@ -38,25 +39,37 @@ while cicle:
     elif option == '3':
         aux = []
         tokens = []
-        for token in Automatas.readScript(document, tokens):
-            if token.token != 'error' and token.token != 'tk_comment':
-                aux.append(token)
-        Automatas.syntacticAnalysis(aux, True)
+        try:
+            Automatas.readScript(document, tokens)
+            for token in tokens:
+                if token.token != 'error' and token.token != 'tk_comment':
+                    aux.append(token)
+        except:
+            print('OCURRIO UN ERROR EN EL AFD')
+        
+        try:
+            Automatas.syntacticAnalysis(aux, True)
+        except:
+            print('OCURRIO UN ERROR EN EL AUTOMATA DE PILA')
     elif option == '4':
         aux = []
-        asf =  0
         tokens = []
         edges = []
         dot = Digraph(comment='flujo de script')
-        for token in Automatas.readScript(document, tokens):
-            if token.token != 'error' and token.token != 'tk_comment':
-                aux.append(token)
-                asf +=1
-        print('---'+str(asf))
-        outputFunctions.createDiagram(aux,dot,65,edges,True,65, False)
-        dot.edges(edges)
-        print(dot.source)
-        dot.render('test-output/instrucciones.gv', view=True)
+        try:
+            Automatas.readScript(document, tokens)
+            for token in tokens:
+                if token.token != 'error' and token.token != 'tk_comment':
+                    aux.append(token)
+        except:
+            print('OCURRIO UN ERROR EN EL AFD')
+        try:
+            outputFunctions.createDiagram(aux,dot,65,edges,True,65, False)
+            dot.edges(edges)
+            print(dot.source)
+            dot.render('test-output/instrucciones.gv', view=True)
+        except:
+            print('NO SE PUDO DIAGRAMAR CORRECTAMENTE')
     elif option == '5':
         print('HASTA PRONTO')
         cicle = False

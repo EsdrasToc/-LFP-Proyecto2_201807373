@@ -213,7 +213,6 @@ def selectWord(content, tokenLine, column):
     elif isBool(content):
         return Clases.Token('tk_boolean', content, 'almacena valores de verdad, es decir, verdadero o falso', tokenLine, column)
     else:
-        #return Clases.Token('error', content, 'Se detecto error', tokenLine, column)
         return Clases.Token('tk_id', content, 'identificadores de variables, funciones y parametros. Debe cumplir con la estructura [(_|L)(_|L|D)*]', tokenLine, column)
 
 def selectSeparator(value, tokenLine, column):
@@ -230,7 +229,7 @@ def selectSeparator(value, tokenLine, column):
     elif value == ',':
         return Clases.Token('tk_comma',',','se utiliza para separar parametros',tokenLine,column)
     elif value == ':':
-        return Clases.Token('tk_points','}','se utiliza luego de un case o un default',tokenLine,column)
+        return Clases.Token('tk_points',':','se utiliza luego de un case o un default',tokenLine,column)
     
 
 def isWord(word):
@@ -317,7 +316,6 @@ def syntacticAnalysis(Tokens, stop):
                 transicion = '(' + iState + ', λ, '
         
         if state == 'i':
-            print('entro a i')
             out = stack.pop()
             j -= 1
             stack.append('#')
@@ -325,15 +323,11 @@ def syntacticAnalysis(Tokens, stop):
             j += 1
             state = 'p'
         elif state == 'p':
-            print('entro a p')
             stack.append('INSTRUCTION')
             intro = 'INSTRUCTION'
             j += 1
             state = 'q'
         elif state == 'q':
-            print('entro a q')
-            #if Tokens[i].token == stack[j-1]:
-            #SELECCION DE NO TERMINAL#
             if stack[j-1] == '#':
                 out = stack.pop()
                 state = 'f'
@@ -535,7 +529,6 @@ def syntacticAnalysis(Tokens, stop):
                     else:
                         error = True  
             else:
-                print('entro aqui')
                 
                 if Tokens[i].token == stack[j-1]:
                     out = stack.pop()
