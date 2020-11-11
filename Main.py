@@ -67,7 +67,12 @@ while cicle:
             outputFunctions.createDiagram(aux,dot,65,edges,True,65, False)
             dot.edges(edges)
             print(dot.source)
-            dot.render('test-output/instrucciones.gv', view=True)
+            try:
+                dot.render('test-output/instrucciones.gv', view=True)
+            except:
+                with open('instrucciones.gv', "w") as report:
+                    report.write(dot.source)
+                print('SE CREO UN ARCHIVO CON EXTENSION .gv')
         except:
             print('NO SE PUDO DIAGRAMAR CORRECTAMENTE')
     elif option == '5':
